@@ -34,3 +34,7 @@ Added a trainable version of the VGG19 `vgg19_trainable`. It support train from 
 A very simple testing is added `test_vgg19_trainable`, switch has demo about how to train, switch off train mode for verification, and how to save.
 
 A seperated file is added (instead of changing existing one) because I want to keep the simplicity of the original VGG networks.
+##Update 2018.03.07:
+fix the tensorflow-version-bugs in vgg16.py, which are tf.split() and tf.concat().
+modify the sytle of print in Vgg16.print_prob() in utils.py, and the result of prediction is more neat and clear after the modifications. 
+add a few pictures to the test_data floder, which can be used to assess the ability of prediction of VGG16

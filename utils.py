@@ -32,12 +32,16 @@ def print_prob(prob, file_path):
     # print prob
     pred = np.argsort(prob)[::-1]
 
+    print('\n')#to make the displayed information more clear and neat
+    print("-------The predictions are as follow-------")
     # Get top1 label
     top1 = synset[pred[0]]
     print("Top1: ", top1, prob[pred[0]])
     # Get top5 label
     top5 = [(synset[pred[i]], prob[pred[i]]) for i in range(5)]
-    print("Top5: ", top5)
+    print("Top5: ")#to make the displayed information more clear and neat
+    for i in range(5):
+        print(top5[i])
     return top1
 
 

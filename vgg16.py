@@ -15,7 +15,7 @@ class Vgg16:
             path = os.path.abspath(os.path.join(path, os.pardir))
             path = os.path.join(path, "vgg16.npy")
             vgg16_npy_path = path
-            print path
+            print(path)#Python version 3.6 and above don not support the using"print path" but "print(path)"
 
         self.data_dict = np.load(vgg16_npy_path, encoding='latin1').item()
         print("npy file loaded")
@@ -25,6 +25,7 @@ class Vgg16:
         load variable from npy to build the VGG
 
         :param rgb: rgb image [batch, height, width, 3] values scaled [0, 1]
+         param rgb must be a tensor.
         """
 
         start_time = time.time()
@@ -32,11 +33,13 @@ class Vgg16:
         rgb_scaled = rgb * 255.0
 
         # Convert RGB to BGR
-        red, green, blue = tf.split(3, 3, rgb_scaled)
+        #In version 1.6.0, tf.split(value, num_or_size_splits, axis=0, num=None, name='split')
+        red, green, blue = tf.split(value=rgb_scaled,num_or_size_splits=[1,1,1],axis=3)
         assert red.get_shape().as_list()[1:] == [224, 224, 1]
         assert green.get_shape().as_list()[1:] == [224, 224, 1]
         assert blue.get_shape().as_list()[1:] == [224, 224, 1]
-        bgr = tf.concat(3, [
+        #when the function is called, it is better that the keyword parameters is transmitted explicitly. 
+        bgr = tf.concat(axis=3, values=[
             blue - VGG_MEAN[0],
             green - VGG_MEAN[1],
             red - VGG_MEAN[2],
