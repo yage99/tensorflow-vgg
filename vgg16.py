@@ -15,7 +15,7 @@ class Vgg16:
             path = os.path.abspath(os.path.join(path, os.pardir))
             path = os.path.join(path, "vgg16.npy")
             vgg16_npy_path = path
-            print(path)#Python version 3.6 and above don not support the using"print path" but "print(path)"
+            print(path)
 
         self.data_dict = np.load(vgg16_npy_path, encoding='latin1').item()
         print("npy file loaded")
@@ -33,12 +33,17 @@ class Vgg16:
         rgb_scaled = rgb * 255.0
 
         # Convert RGB to BGR
-        #In version 1.6.0, tf.split(value, num_or_size_splits, axis=0, num=None, name='split')
-        red, green, blue = tf.split(value=rgb_scaled,num_or_size_splits=[1,1,1],axis=3)
+        # In version 1.6.0,
+        # tf.split(value, num_or_size_splits, axis=0, num=None, name='split')
+        red, green, blue = tf.split(
+                value=rgb_scaled,
+                num_or_size_splits=[1, 1, 1],
+                axis=3)
         assert red.get_shape().as_list()[1:] == [224, 224, 1]
         assert green.get_shape().as_list()[1:] == [224, 224, 1]
         assert blue.get_shape().as_list()[1:] == [224, 224, 1]
-        #when the function is called, it is better that the keyword parameters is transmitted explicitly. 
+        # when the function is called,
+        # it is better that the keyword parameters is transmitted explicitly.
         bgr = tf.concat(axis=3, values=[
             blue - VGG_MEAN[0],
             green - VGG_MEAN[1],
@@ -84,10 +89,18 @@ class Vgg16:
         print("build model finished: %ds" % (time.time() - start_time))
 
     def avg_pool(self, bottom, name):
-        return tf.nn.avg_pool(bottom, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME', name=name)
+        return tf.nn.avg_pool(
+                bottom,
+                ksize=[1, 2, 2, 1],
+                strides=[1, 2, 2, 1],
+                padding='SAME', name=name)
 
     def max_pool(self, bottom, name):
-        return tf.nn.max_pool(bottom, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME', name=name)
+        return tf.nn.max_pool(
+                bottom,
+                ksize=[1, 2, 2, 1],
+                strides=[1, 2, 2, 1],
+                padding='SAME', name=name)
 
     def conv_layer(self, bottom, name):
         with tf.variable_scope(name):
